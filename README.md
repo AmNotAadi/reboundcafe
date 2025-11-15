@@ -1,36 +1,48 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Rebound Café Experience
 
-## Getting Started
+High-end café microsite built with Next.js 16 App Router, Tailwind CSS, and custom UI primitives. Features a cinematic hero video, luxury typography, interactive gallery modal, Instagram mosaic, menu highlights, and dedicated About/Menu/Gallery/Contact routes.
 
-First, run the development server:
+## Tech Stack
+
+- Next.js 16 (App Router, TypeScript, Server Components)
+- Tailwind CSS 4 preview build
+- Radix UI icons, Lucide for accent glyphs
+- Custom design tokens + theme toggle with persistent modal
+
+## Local Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit http://localhost:3000 and iterate on any file under `src/app` or `src/components`. The dev server automatically reloads.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Lint & Build
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run lint
+npm run build
+```
 
-## Learn More
+## Deploying to Cloudflare Pages
 
-To learn more about Next.js, take a look at the following resources:
+This repo ships with a `wrangler.toml` that sets `compatibility_flags = ["nodejs_compat"]`, which Cloudflare Pages requires to run modern Next.js/Node APIs. You have two options:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Cloudflare Dashboard**
+	- Framework preset: **Next.js**
+	- Build command: `npm run build`
+	- Output directory: `.vercel/output/static` (handled automatically by preset)
+	- Under *Settings → Functions → Compatibility flags*, ensure `nodejs_compat` is enabled (the `wrangler.toml` does this if detected).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. **wrangler CLI / CI**
+	- Install dependencies (`npm install`)
+	- Run `npx wrangler pages deploy .vercel/output/static` after `npm run build`, or adopt `npx @cloudflare/next-on-pages@latest build` for edge-native output.
 
-## Deploy on Vercel
+If you see `Node.JS Compatibility Error: no nodejs_compat compatibility flag set`, confirm the deploy picked up the `wrangler.toml` or manually add the flag in the Pages dashboard.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Optional Enhancements
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Wire `@cloudflare/next-on-pages` for zero-config edge rendering.
+- Connect Instagram API once tokens are available.
+- Add CMS integration (Contentful/Sanity) by replacing the static data in `src/lib/content.ts`.
