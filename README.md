@@ -27,7 +27,7 @@ npm run build
 
 ## Deploying to Cloudflare Pages
 
-This repo ships with a `wrangler.toml` that sets `compatibility_flags = ["nodejs_compat"]`, which Cloudflare Pages requires to run modern Next.js/Node APIs. You have two options:
+This repo ships with a `wrangler.toml` **and** a lightweight `functions/_middleware.ts` that set `compatibility_flags = ["nodejs_compat"]`, which Cloudflare Pages requires to run modern Next.js/Node APIs. You have two options:
 
 1. **Cloudflare Dashboard**
 	- Framework preset: **Next.js**
