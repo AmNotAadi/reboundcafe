@@ -12,8 +12,7 @@ export function HeroSection() {
         loop
         muted
         playsInline
-        preload="metadata"
-        poster={BRAND.heroVideoPoster}
+        preload="auto"
         src={fallbackVideo}
       >
         {BRAND.heroVideoSources.map((source) => (

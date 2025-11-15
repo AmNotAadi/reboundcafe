@@ -3,9 +3,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { BRAND } from "@/lib/content";
+import { Menu, X } from "lucide-react";
 
 const nav = [
   { href: "/", label: "Home" },
@@ -17,6 +19,7 @@ const nav = [
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-[var(--color-porcelain)]/80 backdrop-blur-xl dark:bg-[var(--color-charcoal)]/80">
@@ -51,8 +54,45 @@ export function SiteHeader() {
             Reserve
           </Link>
           <ThemeToggle />
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-white/30 bg-white/40 text-[var(--color-slate)] backdrop-blur-lg transition hover:scale-105 dark:bg-black/30 dark:text-white md:hidden"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
         </div>
       </div>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <nav className="border-t border-white/10 bg-[var(--color-porcelain)]/95 backdrop-blur-xl dark:bg-[var(--color-charcoal)]/95 md:hidden">
+          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-4">
+            {nav.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={cn(
+                  "rounded-2xl px-4 py-3 text-sm font-medium transition",
+                  pathname === item.href
+                    ? "bg-[var(--color-olive)]/10 text-[var(--color-olive)]"
+                    : "text-[var(--color-slate)] hover:bg-black/5 dark:text-white dark:hover:bg-white/5"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="mt-2 rounded-full border border-[var(--color-olive)] px-4 py-3 text-center text-xs uppercase tracking-[0.2em] text-[var(--color-olive)] transition hover:bg-[var(--color-olive)] hover:text-white"
+            >
+              Reserve a Table
+            </Link>
+          </div>
+        </nav>
+      )}
     </header>
   );
 }
