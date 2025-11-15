@@ -4,7 +4,7 @@ High-end café microsite built with Next.js 16 App Router, Tailwind CSS, and cus
 
 ## Tech Stack
 
-- Next.js 16 (App Router, TypeScript, Server Components)
+- Next.js 15.5.2 (App Router, TypeScript, Server Components — pinned for Cloudflare compatibility)
 - Tailwind CSS 4 preview build
 - Radix UI icons, Lucide for accent glyphs
 - Custom design tokens + theme toggle with persistent modal

@@ -1,3 +1,8 @@
 name = "rebound-cafe"
 compatibility_date = "2024-11-15"
 compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = ".vercel/output/static"
+pages_functions_dir = ".vercel/functions"
+
+[build]
+command = "npm run pages:build"

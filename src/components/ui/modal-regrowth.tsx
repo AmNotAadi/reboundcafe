@@ -18,7 +18,6 @@ export function ModalRegrowth() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (localStorage.getItem(STORAGE_KEY) === "true") return;
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOpen(true);
   }, []);
 
