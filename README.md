@@ -27,19 +27,23 @@ npm run build
 
 ## Deploying to Cloudflare Pages
 
-This repo ships with a `wrangler.toml` **and** a lightweight `functions/_middleware.ts` that set `compatibility_flags = ["nodejs_compat"]`, which Cloudflare Pages requires to run modern Next.js/Node APIs. You have two options:
+This repo ships with a `wrangler.toml`, a lightweight `functions/_middleware.ts`, **and** `next-on-pages.config.mjs` (used by `@cloudflare/next-on-pages`) that all set `compatibility_flags = ["nodejs_compat"]`, which Cloudflare Pages requires to run modern Next.js/Node APIs. You have two options:
 
-1. **Cloudflare Dashboard**
+1. **Cloudflare Dashboard (recommended)**
 	- Framework preset: **Next.js**
-	- Build command: `npm run build`
-	- Output directory: `.vercel/output/static` (handled automatically by preset)
-	- Under *Settings → Functions → Compatibility flags*, ensure `nodejs_compat` is enabled (the `wrangler.toml` does this if detected).
+	- Enable *Advanced Mode* → Functions directory `.vercel/functions`
+	- Build command: `npm run pages:build`
+	- Output directory: `.vercel/output/static`
+	- The build uses `next-on-pages` + `next-on-pages.config.mjs`, so the `nodejs_compat` flag is enforced automatically. Double-check under *Settings → Functions → Compatibility flags* that it shows up as active after first deploy.
 
 2. **wrangler CLI / CI**
 	- Install dependencies (`npm install`)
-	- Run `npx wrangler pages deploy .vercel/output/static` after `npm run build`, or adopt `npx @cloudflare/next-on-pages@latest build` for edge-native output.
+	- Run `npm run pages:build` (builds Next + generates `.vercel/output/**/*`)
+	- Deploy with `npx wrangler pages deploy .vercel/output/static --functions .vercel/functions`
 
-If you see `Node.JS Compatibility Error: no nodejs_compat compatibility flag set`, confirm the deploy picked up the `wrangler.toml` or manually add the flag in the Pages dashboard.
+If you see `Node.JS Compatibility Error: no nodejs_compat compatibility flag set`, ensure the deployment is using `npm run pages:build`, the generated `.vercel/functions` directory is configured in Pages, and the project contains the latest `next-on-pages.config.mjs` file.
+
+> **Windows note:** The `@cloudflare/next-on-pages` CLI shells out to the Vercel CLI, which currently requires a Unix shell. Run `npm run pages:build` from WSL or a Linux/macOS CI runner when testing locally; Cloudflare's build environment already satisfies this requirement.
 
 ## Optional Enhancements
 
